@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="gameContainer">
-        <button id="playPauseButton" onclick="togglePlayPause()">
-            <span id="pauseIcon">&#10074;&#10074;</span>
-            <span id="playIcon" style="display:none;">&#9658;</span>
-        </button>
-        <canvas id="gameCanvas" width="640" height="480"></canvas>
-    </div>
-    <script src="script.js"></script>
+  <div id="gameContainer">
+    <button id="playPauseButton" onclick="togglePlayPause()">
+      <span id="pauseIcon">&#10074;&#10074;</span>
+      <span id="playIcon" style="display:none;">&#9658;</span>
+    </button>
+    <button id="restartButton" onclick="resetGame(); resetBall()">
+      <span>&#8635;</span>
+    </button>
+    <canvas id="gameCanvas" width="640" height="480"></canvas>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ const paddleHeight = 100;
 const paddleWidth = 12;
 const ballSize = 12;
 const ballSpeed = 4;
-const maxScore = 5;
+const maxScore = 2;
 
 let player1Score = 0;
 let player2Score = 0;
@@ -54,13 +54,16 @@ function drawField() {
 function resetBall() {
     ball.x = canvas.width / 2 - ballSize / 2;
     ball.y = canvas.height / 2 - ballSize / 2;
-    const winner = ball.dx / Math.abs(ball.dx)
+    let winner = 1;
+    if (ball.dx != 0) {
+        winner = ball.dx / Math.abs(ball.dx);
+    }
     ball.dx = 0;
     ball.dy = 0;
     setTimeout(() => {
         ball.dx = winner * ballSpeed;
         ball.dy = Math.random() * 2 - 1;
-    }, 1000);
+    }, 500);
 }
 
 let gamePaused = false;
@@ -88,9 +91,9 @@ function lineIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
     return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
 }
 
-function checkCollision(prevX, prevY, ball, paddle) {
-    const paddleTopLeft = { x: paddle.x, y: paddle.y };
-    const paddleBottomLeft = { x: paddle.x, y: paddle.y + paddleHeight };
+function checkCollision(prevX, prevY, ball, paddle, p1) {
+    const paddleTopLeft = { x: paddle.x - paddleWidth * p1, y: paddle.y };
+    const paddleBottomLeft = { x: paddle.x - paddleWidth * p1, y: paddle.y + paddleHeight };
 
     return lineIntersect(prevX, prevY, ball.x, ball.y, paddleTopLeft.x, paddleTopLeft.y, paddleBottomLeft.x, paddleBottomLeft.y);
 }
@@ -105,7 +108,7 @@ function moveBall() {
     if (ball.y <= 0 || ball.y + ballSize >= canvas.height) {
         ball.dy *= -1;
     }
-    if (checkCollision(prevX, prevY, ball, player1)) {
+    if (checkCollision(prevX, prevY, ball, player1, p1 = -1.0)) {
         const paddleCenter = player1.y + paddleHeight / 2;
         const relativeBallPos = (ball.y + ballSize / 2 - paddleCenter) / (paddleHeight / 2);
         const speedIncrease = Math.abs(1 - relativeBallPos);
@@ -114,7 +117,7 @@ function moveBall() {
             ball.dx *= 1.1;
         }
         ball.dy += (ball.y - (player1.y + paddleHeight / 2)) * 0.02;
-    } else if (checkCollision(prevX, prevY, ball, player2)) {
+    } else if (checkCollision(prevX, prevY, ball, player2, p1 = 1.0)) {
         const paddleCenter = player2.y + paddleHeight / 2;
         const relativeBallPos = (ball.y + ballSize / 2 - paddleCenter) / (paddleHeight / 2);
         const speedIncrease = Math.abs(1 - relativeBallPos);
@@ -123,14 +126,14 @@ function moveBall() {
             ball.dx *= 1.1;
         }
         ball.dy += (ball.y - (player2.y + paddleHeight / 2)) * 0.02;
-    } else if (ball.x < 0) {
+    } else if (ball.x < 0 && player2Score < maxScore) {
         player2Score++;
-        checkWinner();
-        resetBall();
-    } else if (ball.x > canvas.width - ballSize) {
+        if (player2Score < maxScore)
+            resetBall();
+    } else if (ball.x > canvas.width - ballSize && player1Score < maxScore) {
         player1Score++;
-        checkWinner();
-        resetBall();
+        if (player1Score < maxScore)
+            resetBall();
     }
 }
 
@@ -168,21 +171,30 @@ function movePaddles() {
     }
 }
 
+let gameOver = false;
+
 function checkWinner() {
     if (player1Score === maxScore) {
-        setTimeout(() => {
-            alert('Player 1 wins!');
-            resetGame();
-        }, 100);
+        if (!gameOver){
+            setTimeout(() => {
+                alert('Player 1 wins!');
+                resetGame();
+            }, 100);
+        }
+        gameOver = true;
     } else if (player2Score === maxScore) {
-        setTimeout(() => {
-            alert('Player 2 wins!');
-            resetGame();
-        }, 100);
+        if (!gameOver) {
+            setTimeout(() => {
+                alert('Player 2 wins!');
+                resetGame();
+            }, 100);
+        }
+        gameOver = true;
     }
 }
 
 function resetGame() {
+    gameOver = false;
     player1Score = 0;
     player2Score = 0;
     player1.y = (canvas.height - paddleHeight) / 2;
@@ -209,5 +221,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+// resetBall();
 gameLoop();
 

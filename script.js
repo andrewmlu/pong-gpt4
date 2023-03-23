@@ -170,11 +170,15 @@ function movePaddles() {
 
 function checkWinner() {
     if (player1Score === maxScore) {
-        alert('Player 1 wins!');
-        resetGame();
+        setTimeout(() => {
+            alert('Player 1 wins!');
+            resetGame();
+        }, 100);
     } else if (player2Score === maxScore) {
-        alert('Player 2 wins!');
-        resetGame();
+        setTimeout(() => {
+            alert('Player 2 wins!');
+            resetGame();
+        }, 100);
     }
 }
 

@@ -1,0 +1,46 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    margin: 0;
+}
+
+#gameContainer {
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #6db746;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#playPauseButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    background-color: #6db746;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#playPauseButton:focus {
+    outline: none;
+}
+
+#playPauseButton:hover {
+    background-color: #4a9a34;
+}
+
+#pauseIcon, #playIcon {
+    font-size: 1.5rem;
+}

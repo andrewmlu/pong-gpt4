@@ -4,7 +4,7 @@ const paddleHeight = 100;
 const paddleWidth = 12;
 const ballSize = 12;
 const ballSpeed = 4;
-const maxScore = 2;
+const maxScore = 5;
 
 let player1Score = 0;
 let player2Score = 0;
